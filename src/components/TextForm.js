@@ -11,11 +11,17 @@ export default function TextForm(props) {
     let newText = text.toLowerCase();
     setText(newText);
   };
+  const handleSpeakClick = () => {
+    console.log("Lowercase was clicked");
+    let message = new SpeechSynthesisUtterance();
+    message.text = text;
+    window.speechSynthesis.speak(message);
+  };
   const handleOnChange = (event) => {
     console.log("On Change");
     setText(event.target.value);
   };
-  const [text, setText] = useState("Enter text here");
+  const [text, setText] = useState("");
   return (
     <>
       <div className="container">
@@ -29,11 +35,14 @@ export default function TextForm(props) {
             rows="8"
           ></textarea>
         </div>
-        <button className="btn btn-primary" onClick={handleUpClick}>
+        <button className="btn btn-primary mx-1" onClick={handleUpClick}>
           Convert to Uppercase
         </button>
-        <button className="btn btn-primary mx-3" onClick={handleLoClick}>
+        <button className="btn btn-primary" onClick={handleLoClick}>
           Convert to Lowercase
+        </button>
+        <button className="btn btn-primary mx-1" onClick={handleSpeakClick}>
+          Speak Text
         </button>
       </div>
       <div className="container my-3">
@@ -43,7 +52,11 @@ export default function TextForm(props) {
         </p>
         <p>{0.08 * text.split(" ").length} Minute Read</p>
         <h2>Preview</h2>
-        <p>{text}</p>
+        <p>
+          {text.length > 0
+            ? text
+            : "Enter something in the box above to preview it here"}
+        </p>
       </div>
     </>
   );
